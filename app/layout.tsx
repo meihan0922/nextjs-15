@@ -1,15 +1,12 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono as GeistMono } from "next/font/google";
+import { Inter, Space_Grotesk as SpaceGrotesk } from "next/font/google";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const spaceGrotesk = SpaceGrotesk({
   subsets: ["latin"],
-});
-
-const geistMono = GeistMono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  variable: "--font-spaceGrotesk",
+  weight: "500",
 });
 
 export const metadata: Metadata = {
@@ -22,11 +19,10 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  console.log(inter);
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${inter.className} ${spaceGrotesk.variable}`}>
         {children}
       </body>
     </html>
