@@ -21,7 +21,7 @@ const config = [
     "next/typescript",
     "standard",
     // "plugin:tailwindcss/recommended",
-    "prettier"
+    "prettier",
   ),
   {
     rules: {
@@ -29,16 +29,14 @@ const config = [
         "error",
         {
           groups: [
-            "builtin",
-            "external",
-            "internal",
-            ["parent", "sibling"],
-            "index",
-            "object",
+            "type", // TS 的 import type
+            "builtin", // Node "builtin" modules
+            "external", // npm 模組
+            "internal", // alias（@/ 或 ~ 這類內部別名）
+            ["parent", "sibling", "index"], // 相對路徑
+            "object", // import foo = require('foo')
           ],
-
-          "newlines-between": "always",
-
+          "newlines-between": "always", // 每個 group 間空一行
           pathGroups: [
             {
               pattern: "@app/**",
@@ -46,9 +44,7 @@ const config = [
               position: "after",
             },
           ],
-
           pathGroupsExcludedImportTypes: ["builtin"],
-
           alphabetize: {
             order: "asc",
             caseInsensitive: true,
@@ -60,7 +56,6 @@ const config = [
   },
   {
     files: ["**/*.ts", "**/*.tsx"],
-
     rules: {
       "no-undef": "off",
     },
