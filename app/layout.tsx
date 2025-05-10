@@ -1,6 +1,10 @@
 import "./globals.css";
 import type { Metadata } from "next";
+
 import { Inter, Space_Grotesk as SpaceGrotesk } from "next/font/google";
+
+import Navbar from "@/components/navigation/navbar";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const spaceGrotesk = SpaceGrotesk({
@@ -23,11 +27,18 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  console.log(inter);
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={`${inter.className} ${spaceGrotesk.variable}`}>
-        {children}
+        <ThemeProvider
+          attribute="class" // 用哪種方式來切換主題的屬性
+          defaultTheme="system"
+          enableSystem // 是否啟用「跟隨系統主題」的功能
+          disableTransitionOnChange // 是否在主題切換時 暫時移除 CSS transition 動畫（避免變色時出現閃爍動畫），然後再加回來
+        >
+          <Navbar />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
