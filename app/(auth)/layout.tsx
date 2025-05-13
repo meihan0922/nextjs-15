@@ -5,8 +5,8 @@ import SocailAuthForm from "@/components/forms/SocailAuthForm";
 const AuthLayout = ({ children }: React.PropsWithChildren) => {
   return (
     <main
-      className="bg-auth-light dark:bg-auth-dark flex-center min-h-screen bg-center bg-no-repeat
-        px-4 py-10"
+      className="bg-auth-light dark:bg-auth-dark flex-center min-h-screen bg-cover bg-center
+        bg-no-repeat px-4 py-10"
     >
       <section
         className="light-border background-light800_dark200 shadow-light100_dark100 min-w-full
