@@ -8,10 +8,15 @@ import { SheetClose } from "@/components/ui/sheet";
 import { sidebarLinks } from "@/constants";
 import { cn } from "@/lib/utils";
 
-const NavLinks = ({ isMobileNav = false }: { isMobileNav?: boolean }) => {
+const NavLinks = ({
+  isMobileNav = false,
+  userId,
+}: {
+  isMobileNav?: boolean;
+  userId?: number;
+}) => {
   const pathname = usePathname();
-  // TODO: 暫時寫死
-  const userId = 1;
+
   return (
     <>
       {sidebarLinks.map((item) => {
