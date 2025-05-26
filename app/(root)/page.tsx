@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import HomeFilter from "@/components/filters/HomeFilter";
 import LocalSearch from "@/components/search/LocalSearch";
 import { Button } from "@/components/ui/button";
 import ROUTES from "@/constants/routes";
@@ -11,7 +12,7 @@ const questions = [
     description: "I want to learn React, can anyone help me?",
     tags: [
       { _id: "1", name: "React" },
-      { _id: "2", name: "JavaScript" },
+      // { _id: "2", name: "JavaScript" },
     ],
     author: { _id: "1", name: "John Doe" },
     upvotes: 10,
@@ -40,13 +41,17 @@ type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 // https://nextjs.org/docs/app/guides/upgrading/version-15#asynchronous-page
 // 在 page 頁面自動 searchParams，之後串接 api 時，也就是 url 改變後，伺服器端和資料庫直接溝通，回傳此伺服器元件
 const Home = async ({ searchParams }: { searchParams: SearchParams }) => {
-  const { query = "" } = await searchParams;
+  const { query = "", fliter = "" } = await searchParams;
 
-  const filteredQuestions = questions.filter((question) =>
-    question.title
+  const filteredQuestions = questions.filter((question) => {
+    const matchesQuery = question.title
       .toLowerCase()
-      .includes(typeof query === "string" ? query.toLowerCase() : ""),
-  );
+      .includes(typeof query === "string" ? query.toLowerCase() : "");
+    const matchesFilter = fliter
+      ? question.tags.some((i) => i.name.toLowerCase() === fliter)
+      : true;
+    return matchesQuery && matchesFilter;
+  });
 
   return (
     <>
@@ -59,6 +64,7 @@ const Home = async ({ searchParams }: { searchParams: SearchParams }) => {
           <Link href={ROUTES.ASK_QUESTION}>Ask a Question</Link>
         </Button>
       </section>
+      <HomeFilter />
       <section className="mt-11">
         <LocalSearch
           imgSrc="/icons/search.svg"
