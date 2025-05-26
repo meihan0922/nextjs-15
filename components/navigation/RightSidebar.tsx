@@ -1,13 +1,9 @@
-import { LogOut } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-import { auth, signOut } from "@/auth";
 import ROUTES from "@/constants/routes";
 
-import NavLinks from "./navbar/NavLinks";
 import TagCard from "../cards/TagCard";
-import { Button } from "../ui/button";
 
 const hotQuestions = [
   { _id: "1", title: "How to create a custom hook in React?" },
@@ -26,10 +22,6 @@ const popularTags = [
 ];
 
 const RightSidebar = async () => {
-  // TODO: 暫時寫死
-  const userId = 0;
-  const session = await auth();
-
   return (
     <section
       className="custom-scrollbar background-light900_dark200 light-border shadow-light-300
