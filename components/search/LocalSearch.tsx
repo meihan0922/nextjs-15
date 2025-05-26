@@ -1,10 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useQueryState } from "nuqs";
 import { useEffect, useState } from "react";
 
-import { formUrlQuery, removeKeysFromUrlQuery } from "@/lib/url";
+import { useDebounce } from "@/hooks/useDebounce";
 
 import { Input } from "../ui/input";
 
@@ -21,38 +21,18 @@ const LocalSearch = ({
   otherClasses = "",
   route,
 }: Props) => {
-  const pathname = usePathname();
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const query = searchParams.get("query") || "";
-  const [searchQuery, setSearchQuery] = useState(query);
+  // ! 改使用管理 url 狀態，會自動同步 https://nuqs.47ng.com/
+  const [inputValue, setInputValue] = useState("");
+  const [, setSearchQuery] = useQueryState("query", {
+    defaultValue: "",
+    shallow: false,
+  });
+
+  const debouncedValue = useDebounce(inputValue);
 
   useEffect(() => {
-    const debounce = setTimeout(() => {
-      // * 輸入後 setState 同時把狀態寄到 url 上，寄送到伺服器端時，就可以根據 params 直接篩選資料
-      // 會再次觸發 searchParams 的改變
-      if (searchQuery) {
-        const newUrl = formUrlQuery({
-          params: searchParams.toString(),
-          key: "query",
-          value: searchQuery,
-        });
-        router.push(newUrl, { scroll: false });
-      } else {
-        // * 當前路由等同於原始的路由，沒有搜索值，也就是被刪除了，那就移除清空 url params
-        if (pathname === route) {
-          const newUrl = removeKeysFromUrlQuery({
-            params: searchParams.toString(),
-            keysToRemove: ["query"],
-          });
-
-          router.push(newUrl, { scroll: false });
-        }
-      }
-    }, 300);
-
-    return () => clearTimeout(debounce);
-  }, [searchParams, router, searchQuery, route, pathname]);
+    setSearchQuery(debouncedValue);
+  }, [debouncedValue, setSearchQuery]);
 
   return (
     <div
@@ -69,8 +49,8 @@ const LocalSearch = ({
       <Input
         type="text"
         placeholder={placeholder}
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
         className="paragraph-regular no-focus placeholder text-dark400_light700 border-none
           shadow-none"
       />
