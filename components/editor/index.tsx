@@ -2,7 +2,7 @@
 
 import "./dark-editor.css";
 import "@mdxeditor/editor/style.css";
-import type { ForwardedRef } from "react";
+import type { Ref } from "react";
 
 import {
   type MDXEditorMethods,
@@ -10,7 +10,6 @@ import {
   headingsPlugin,
   listsPlugin,
   quotePlugin,
-  thematicBreakPlugin,
   markdownShortcutPlugin,
   MDXEditor,
   ConditionalContents,
@@ -32,19 +31,20 @@ import {
   codeBlockPlugin,
   codeMirrorPlugin,
   diffSourcePlugin,
+  CodeToggle,
 } from "@mdxeditor/editor";
 import { basicDark } from "cm6-theme-basic-dark";
 import { useTheme } from "next-themes";
 
 interface Props extends Omit<MDXEditorProps, "markdown"> {
-  editorRef: ForwardedRef<MDXEditorMethods> | null;
+  editorRef: Ref<MDXEditorMethods> | null;
   value: string;
   fieldChange: (value: string) => void;
 }
 
-const Editor = ({ value, editorRef, fieldChange, ...props }: Props) => {
+const Editor = ({ value, editorRef, fieldChange }: Props) => {
   const { resolvedTheme } = useTheme();
-  const theme = resolvedTheme === "dark" ? [basicDark] : [];
+  const themeExtension = resolvedTheme === "dark" ? [basicDark] : [];
 
   return (
     <MDXEditor
@@ -56,7 +56,6 @@ const Editor = ({ value, editorRef, fieldChange, ...props }: Props) => {
         linkPlugin(),
         linkDialogPlugin(),
         quotePlugin(),
-        thematicBreakPlugin(),
         markdownShortcutPlugin(),
         tablePlugin(),
         imagePlugin(),
@@ -67,7 +66,7 @@ const Editor = ({ value, editorRef, fieldChange, ...props }: Props) => {
             txt: "txt",
             sql: "sql",
             html: "html",
-            saas: "saas",
+            sass: "sass",
             scss: "scss",
             bash: "bash",
             json: "json",
@@ -78,7 +77,7 @@ const Editor = ({ value, editorRef, fieldChange, ...props }: Props) => {
             jsx: "JavaScript (React)",
           },
           autoLoadLanguageSupport: true,
-          codeMirrorExtensions: theme,
+          codeMirrorExtensions: themeExtension,
         }),
         diffSourcePlugin({ viewMode: "rich-text", diffMarkdown: "" }),
         toolbarPlugin({
@@ -96,6 +95,7 @@ const Editor = ({ value, editorRef, fieldChange, ...props }: Props) => {
                       <Separator />
 
                       <BoldItalicUnderlineToggles />
+                      <CodeToggle />
                       <Separator />
 
                       <ListsToggle />
@@ -107,6 +107,7 @@ const Editor = ({ value, editorRef, fieldChange, ...props }: Props) => {
 
                       <InsertTable />
                       <InsertThematicBreak />
+                      <Separator />
 
                       <InsertCodeBlock />
                     </>
@@ -117,11 +118,10 @@ const Editor = ({ value, editorRef, fieldChange, ...props }: Props) => {
           ),
         }),
       ]}
-      className="background-light800_dark200 light-border-2 markdown-editor dark-editor w-full
-        border"
+      className="background-light800_dark200 light-border-2 markdown-editor dark-editor grid
+        w-full border"
       onChange={fieldChange}
       ref={editorRef}
-      {...props}
     />
   );
 };
