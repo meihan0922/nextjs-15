@@ -12,7 +12,7 @@ export interface IAccount {
 
 const AccountSchema = new Schema<IAccount>(
   {
-    userId: { type: Schema.Types.ObjectId, ref: "User", unique: true },
+    userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
     name: { type: String, required: true },
     image: { type: String },
     password: { type: String },
