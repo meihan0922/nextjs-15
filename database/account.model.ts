@@ -1,4 +1,4 @@
-import { model, models, Schema, Types } from "mongoose";
+import { model, models, Schema, Types, Document } from "mongoose";
 
 // 單個使用者可以有多個帳戶
 export interface IAccount {
@@ -9,6 +9,8 @@ export interface IAccount {
   provider: string; // google, fb,  github, etc.
   providerAccountId: string;
 }
+
+export interface IAccountDoc extends IAccount, Document {}
 
 const AccountSchema = new Schema<IAccount>(
   {
@@ -22,6 +24,6 @@ const AccountSchema = new Schema<IAccount>(
   { timestamps: true },
 );
 
-const Account = models?.account || model<IAccount>("Account", AccountSchema);
+const Account = models?.Account || model<IAccount>("Account", AccountSchema);
 
 export default Account;

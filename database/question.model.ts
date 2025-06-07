@@ -1,4 +1,4 @@
-import { model, models, Schema, Types } from "mongoose";
+import { model, models, Schema, Types, Document } from "mongoose";
 
 export interface IQuestion {
   title: string;
@@ -11,21 +11,23 @@ export interface IQuestion {
   author: Types.ObjectId; // 對應到 User Model，一個問題對應一個作者
 }
 
+export interface IQuestionDoc extends IQuestion, Document {}
+
 const QuestionSchema = new Schema<IQuestion>(
   {
     title: { type: String, required: true },
     content: { type: String, required: true },
     tags: [{ type: Schema.Types.ObjectId, ref: "Tag" }],
-    views: { type: Number },
-    answers: { type: Number },
-    upvotes: { type: Number },
-    downvotes: { type: Number },
+    views: { type: Number, default: 0 },
+    answers: { type: Number, default: 0 },
+    upvotes: { type: Number, default: 0 },
+    downvotes: { type: Number, default: 0 },
     author: { type: Schema.Types.ObjectId, ref: "User", unique: true },
   },
   { timestamps: true },
 );
 
 const Question =
-  models?.question || model<IQuestion>("Question", QuestionSchema);
+  models?.Question || model<IQuestion>("Question", QuestionSchema);
 
 export default Question;

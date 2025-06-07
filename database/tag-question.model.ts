@@ -1,4 +1,4 @@
-import { model, models, Schema, Types } from "mongoose";
+import { model, models, Schema, Types, Document } from "mongoose";
 
 // 考慮到兩個需求
 // 1. 問題相關的標籤有幾個 2. 真正關聯tag的問題有哪些
@@ -9,6 +9,8 @@ export interface ITagQuestion {
   question: Types.ObjectId;
 }
 
+export interface ITagQuestionDoc extends ITagQuestion, Document {}
+
 const TagQuestionSchema = new Schema<ITagQuestion>(
   {
     tag: { type: Schema.Types.ObjectId, ref: "Tag", required: true },
@@ -18,6 +20,6 @@ const TagQuestionSchema = new Schema<ITagQuestion>(
 );
 
 const TagQuestion =
-  models?.tagQuestion || model<ITagQuestion>("TagQuestion", TagQuestionSchema);
+  models?.TagQuestion || model<ITagQuestion>("TagQuestion", TagQuestionSchema);
 
 export default TagQuestion;
