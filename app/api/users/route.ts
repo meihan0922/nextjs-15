@@ -7,6 +7,7 @@ import dbconnect from "@/lib/mongoose";
 import { UserSchema } from "@/lib/validations";
 import { APIErrorResponse } from "@/types/global";
 
+// GET /api/users
 export async function GET() {
   try {
     await dbconnect();
@@ -18,6 +19,7 @@ export async function GET() {
   }
 }
 
+// Create user
 export async function POST(request: Request) {
   try {
     await dbconnect();
