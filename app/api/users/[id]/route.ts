@@ -60,6 +60,9 @@ export async function PUT(
     await dbconnect();
     const body = await request.json();
 
+    // .partial() 方法會讓 schema 裡的所有欄位變成 可選 (optional)
+    // parse - 驗證失敗會直接拋出錯誤，進入 catch
+    // safeParse - 不會 throw error，而是回傳一個物件 { success: true, data } 或 { success: false, error }
     const validatedData = UserSchema.partial().parse(body);
 
     // 因為默認會是舊的物件，設定成 true 是新的
