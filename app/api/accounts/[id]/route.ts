@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import Account from "@/database/account.model";
+import Account, { IAccountDoc } from "@/database/account.model";
 import handleError from "@/lib/handlers/error";
 import { NotFoundError, ValidationError } from "@/lib/http-errors";
 import dbconnect from "@/lib/mongoose";
@@ -10,7 +10,7 @@ import { APIErrorResponse } from "@/types/global";
 // GET /api/accounts/[id]
 export async function GET(
   _: Request,
-  { params }: { params: Promise<{ id: string }> },
+  { params }: { params: Promise<IAccountDoc["id"]> },
 ) {
   const { id } = await params;
 
@@ -30,7 +30,7 @@ export async function GET(
 // DELETE /api/accounts/[id]
 export async function DELETE(
   _: Request,
-  { params }: { params: Promise<{ id: string }> },
+  { params }: { params: Promise<IAccountDoc["id"]> },
 ) {
   const { id } = await params;
 
@@ -50,7 +50,7 @@ export async function DELETE(
 // PUT /api/accounts/[id]
 export async function PUT(
   request: Request,
-  { params }: { params: Promise<{ id: string }> },
+  { params }: { params: Promise<IAccountDoc["id"]> },
 ) {
   const { id } = await params;
 
