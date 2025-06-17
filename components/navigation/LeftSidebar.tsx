@@ -9,9 +9,8 @@ import NavLinks from "./navbar/NavLinks";
 import { Button } from "../ui/button";
 
 const LeftSidebar = async () => {
-  // TODO: 暫時寫死
-  const userId = 0;
   const session = await auth();
+  const userId = session?.user?.id;
 
   return (
     <section
@@ -25,7 +24,6 @@ const LeftSidebar = async () => {
       <div className="flex flex-col gap-3">
         {userId ? (
           <form
-            className="px-10 pt-[100px]"
             action={async () => {
               "use server";
               await signOut({ redirectTo: ROUTES.SIGN_IN });

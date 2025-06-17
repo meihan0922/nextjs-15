@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { auth } from "@/auth";
 import QuestionCard from "@/components/cards/QuestionCard";
 import HomeFilter from "@/components/filters/HomeFilter";
 import LocalSearch from "@/components/search/LocalSearch";
@@ -52,6 +53,8 @@ type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 // https://nextjs.org/docs/app/guides/upgrading/version-15#asynchronous-page
 // 在 page 頁面自動 searchParams，之後串接 api 時，也就是 url 改變後，伺服器端和資料庫直接溝通，回傳此伺服器元件
 const Home = async ({ searchParams }: { searchParams: SearchParams }) => {
+  const session = await auth();
+  console.log("%capp/(root)/page.tsx:56 session", "color: #26bfa5;", session);
   const { query = "", fliter = "" } = await searchParams;
 
   const filteredQuestions = questions.filter((question) => {
